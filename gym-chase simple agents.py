@@ -26,16 +26,17 @@ def write_chase_log(log, agent_name):
        
 
 import gym
-#from gym_chase.envs import ChaseEnv
-#env = gym.make('gym_chase:Chase-v0')
+import gym_chase
+
+env = gym.make('gym_chase:Chase-v0')
 
 EPISODES = 10000
 e = 0
 state_log = []
 
-"""
-# Simple human agent
 
+# Simple human agent
+"""
 while e < EPISODES:
     done = False
     e_step = 0
@@ -53,7 +54,7 @@ while e < EPISODES:
         print('  / | \\')
         print('1   2   3')
         p_move = input('\nYour move [1-9 move, 5 stay still]:')
-        n_state, r, done = env.step(int(p_move))
+        n_state, r, done, dummy, info = env.step(int(p_move))
         print('\nEpisode:', e, 'Step:', e_step)
         print('\nReward:', r)
         total_reward += r
@@ -70,6 +71,7 @@ while e < EPISODES:
 
 write_chase_log(state_log, 'Human')
 
+"""
 # Simple random agent
 
 import random
@@ -86,26 +88,26 @@ while e < EPISODES:
     random.seed()
     while not done:
         # time.sleep(2)
-        env.render()
+        # env.render()
         rnd_move = randrange(9) + 1
-        n_state, r, done = env.step(rnd_move)
-        print('\nReward:', r)
+        # rnd_move = 5
+        n_state, r, done, dummy, info = env.step(rnd_move)
+        # print('\nReward:', r)
         total_reward += r 
         e_step += 1
         n_state = n_state.ravel()
         state_log.append([e, e_step, rnd_move, r, done, copy.deepcopy(n_state)])
-    env.render()
-#    if total_reward == 5:
-#        print("\nAll robots eliminated. Total reward =", total_reward)
-#    else:
-#        print("\nAgent eliminated. Total reward =", total_reward)
+    # env.render()
+    if total_reward == 5:
+        print("All robots eliminated. Total reward =", total_reward)
+    else:
+        print("Agent eliminated. Total reward =", total_reward)
     e += 1
 
-write_chase_log(state_log, 'Random')
+# write_chase_log(state_log, 'Random')
 
-""" 
 # Evaluate keras agent
-
+"""
 from keras.models import load_model
 
 model_name = 'exp_23g_train'
@@ -149,4 +151,4 @@ while e < EPISODES:
     e += 1
     
 write_chase_log(state_log, str(model_name) + "_val")
-
+"""
