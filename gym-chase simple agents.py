@@ -46,7 +46,7 @@ while e < EPISODES:
     done = False
     e_step = 0
     total_reward = 0
-    state = env.reset(random_seed=e)
+    state, info = env.reset(random_seed=e)
     state = state.ravel()
 
     state_log.append([e, e_step, None, None, done, deepcopy(state)])
@@ -83,7 +83,7 @@ while e < EPISODES:
     done = False
     e_step = 0
     total_reward = 0
-    state = env.reset(seed=e)
+    state, info = env.reset(seed=e)
     state = state.ravel()
     state_log.append([e, e_step, None, None, done, deepcopy(state)])
 
