@@ -5,6 +5,7 @@ Create a basic test bed for the Chase gym environment...
 """
 import gym
 from copy import deepcopy
+import numpy as np
 
 from datetime import datetime
 import random
@@ -21,8 +22,7 @@ def write_chase_log(log, agent_name):
         h_line = 'Episode,Step,Action,Reward,Done,' + arena_pos + '\n'
         f.write(h_line)
         for i in range(len(log)):
-            log[i][5] = str(log[i][5]).replace('.', ',')
-            log[i][5] = log[i][5].replace('\n', '')[1:-2]
+            log[i][5] = str(log[i][5]).replace(' ', ',')[1:-1]
             l_line = '{},{},{},{},{},{}\n'.format(log[i][0],
                                                   log[i][1],
                                                   log[i][2],
@@ -33,12 +33,13 @@ def write_chase_log(log, agent_name):
         f.close
 
 
+# Added to stop LF being added when convereted to string.
+np.set_printoptions(linewidth=1000)
 env = gym.make('gym_chase:Chase-v0')
 
 EPISODES = 10
 e = 0
 state_log = []
-
 
 # Simple human agent
 """
@@ -89,16 +90,13 @@ while e < EPISODES:
 
     random.seed()
     while not done:
-        # time.sleep(2)
-        # env.render()
         rnd_move = randrange(9) + 1
+        rnd_move = 5
         n_state, r, done, dummy, info = env.step(rnd_move)
-        # print('\nReward:', r)
         total_reward += r
         e_step += 1
         n_state = n_state.ravel()
         state_log.append([e, e_step, rnd_move, r, done, deepcopy(n_state)])
-    # env.render()
     if total_reward == 5:
         print("All robots eliminated. Total reward =", total_reward)
     else:
