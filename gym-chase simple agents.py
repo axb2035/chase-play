@@ -35,15 +35,14 @@ def write_chase_log(log, agent_name):
 
 # Added to stop LF being added when convereted to string.
 np.set_printoptions(linewidth=1000)
-env = gym.make('gym_chase:Chase-v0')
 
-EPISODES = 1
+EPISODES = 100
 e = 0
 state_log = []
 
 # Simple human agent
-
 """
+env = gym.make('gym_chase:Chase-v0', render_mode="human")
 while e < EPISODES:
     done = False
     e_step = 0
@@ -81,6 +80,7 @@ write_chase_log(state_log, 'Human')
 
 # Simple random agent
 
+env = gym.make('gym_chase:Chase-v0')
 while e < EPISODES:
     done = False
     e_step = 0
