@@ -37,17 +37,18 @@ def write_chase_log(log, agent_name):
 np.set_printoptions(linewidth=1000)
 env = gym.make('gym_chase:Chase-v0')
 
-EPISODES = 10
+EPISODES = 1
 e = 0
 state_log = []
 
 # Simple human agent
+
 """
 while e < EPISODES:
     done = False
     e_step = 0
     total_reward = 0
-    state, info = env.reset(random_seed=e)
+    state, info = env.reset(seed=e)
     state = state.ravel()
 
     state_log.append([e, e_step, None, None, done, deepcopy(state)])
@@ -76,8 +77,8 @@ while e < EPISODES:
 
 
 write_chase_log(state_log, 'Human')
-
 """
+
 # Simple random agent
 
 while e < EPISODES:
