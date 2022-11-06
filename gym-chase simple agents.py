@@ -1,11 +1,14 @@
 """
 Created on Mon Jun 24 16:29:35 2019
 
-Create a basic test bed for the Chase gym environment...
+Create a basic test bed for the Chase gymnasium environment.
 """
-import gym
-from copy import deepcopy
+import gymnasium as gym
+# import gym
 import numpy as np
+
+# TODO: Update logging to support new internal game state.
+# from copy import deepcopy
 
 from datetime import datetime
 import random
@@ -36,21 +39,24 @@ def write_chase_log(log, agent_name):
 # Added to stop LF being added when convereted to string.
 np.set_printoptions(linewidth=1000)
 
-EPISODES = 100
+EPISODES = 1
 e = 0
 state_log = []
 
 # Simple human agent
+# TODO: Remove human agent and make the env work with:
+# play(gymnasium.make('gym_chase:Chase-v1'))
+
 """
-env = gym.make('gym_chase:Chase-v0', render_mode="human")
+env = gym.make('gym_chase:Chase-v1', render_mode="human")
 while e < EPISODES:
     done = False
     e_step = 0
     total_reward = 0
     state, info = env.reset(seed=e)
-    state = state.ravel()
-
-    state_log.append([e, e_step, None, None, done, deepcopy(state)])
+    # TODO: Update logging to support new internal game state.
+    # state = state.ravel()
+    # state_log.append([e, e_step, None, None, done, deepcopy(state)])
 
     while not done:
         env.render()
@@ -65,8 +71,8 @@ while e < EPISODES:
         print('\nReward:', r)
         total_reward += r
         e_step += 1
-        n_state = n_state.ravel()
-        state_log.append([e, e_step, p_move, r, done, deepcopy(n_state)])
+        # n_state = n_state.ravel()
+        # state_log.append([e, e_step, p_move, r, done, deepcopy(n_state)])
     env.render()
     if total_reward == 5:
         print("\nAll robots eliminated. Total reward =", total_reward)
@@ -74,34 +80,33 @@ while e < EPISODES:
         print("\nAgent eliminated. Total reward =", total_reward)
     e += 1
 
-
-write_chase_log(state_log, 'Human')
+# write_chase_log(state_log, 'Human')
 """
 
 # Simple random agent
 
-env = gym.make('gym_chase:Chase-v0')
+env = gym.make('gym_chase:Chase-v1')
 while e < EPISODES:
     done = False
     e_step = 0
     total_reward = 0
     state, info = env.reset(seed=e)
-    state = state.ravel()
-    state_log.append([e, e_step, None, None, done, deepcopy(state)])
+    # TODO: Update logging to support new internal game state.
+    # state = state.ravel()
+    # state_log.append([e, e_step, None, None, done, deepcopy(state)])
 
     random.seed()
     while not done:
         rnd_move = randrange(9) + 1
-        rnd_move = 5
         n_state, r, done, dummy, info = env.step(rnd_move)
         total_reward += r
         e_step += 1
-        n_state = n_state.ravel()
-        state_log.append([e, e_step, rnd_move, r, done, deepcopy(n_state)])
+        # n_state = n_state.ravel()
+        # state_log.append([e, e_step, rnd_move, r, done, deepcopy(n_state)])
     if total_reward == 5:
         print("All robots eliminated. Total reward =", total_reward)
     else:
         print("Agent eliminated. Total reward =", total_reward)
     e += 1
 
-write_chase_log(state_log, 'Random')
+# write_chase_log(state_log, 'Random')
