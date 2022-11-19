@@ -39,7 +39,7 @@ def write_chase_log(log, agent_name):
 # Added to stop LF being added when convereted to string.
 np.set_printoptions(linewidth=1000)
 
-EPISODES = 1
+EPISODES = 100
 e = 0
 state_log = []
 
@@ -54,6 +54,7 @@ while e < EPISODES:
     e_step = 0
     total_reward = 0
     state, info = env.reset(seed=e)
+    print("Render mode:", env.render_mode)
     # TODO: Update logging to support new internal game state.
     # state = state.ravel()
     # state_log.append([e, e_step, None, None, done, deepcopy(state)])
@@ -98,6 +99,7 @@ while e < EPISODES:
     random.seed()
     while not done:
         rnd_move = randrange(9) + 1
+        rnd_move = 5
         n_state, r, done, dummy, info = env.step(rnd_move)
         total_reward += r
         e_step += 1
@@ -110,3 +112,4 @@ while e < EPISODES:
     e += 1
 
 # write_chase_log(state_log, 'Random')
+
