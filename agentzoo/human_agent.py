@@ -1,13 +1,12 @@
-"""
-Created on Wed Nov 9 2022
+"""A basic human player for Chase.
 
-Create a basic human player using the play command.
+Created on Wed Nov 9 2022.
 """
-import gymnasium as gym
-import numpy as np
 # from gymnasium.utils.play import play
-import gym_examples
+# import gym_examples
+import gymnasium as gym
 
+# import numpy as np
 
 EPISODES = 10
 e = 0
@@ -29,7 +28,7 @@ state_log = []
 # default_action = np.array([0,0,0])
 # play(gym.make('gym_examples:GridWorld-v0')) #, keys_to_action=mapping))
 
-env = gym.make('gym_chase:Chase-v1', render_mode="human")
+env = gym.make("gym_chase:Chase-v1", render_mode="human")
 while e < EPISODES:
     done = False
     e_step = 0
@@ -41,15 +40,15 @@ while e < EPISODES:
 
     while not done:
         env.render()
-        print('\n7   8   9')
-        print('  \\ | /')
-        print('4 - 5 - 6')
-        print('  / | \\')
-        print('1   2   3')
-        p_move = input('\nYour move [1-9 move, 5 stay still]:')
+        print("\n7   8   9")
+        print("  \\ | /")
+        print("4 - 5 - 6")
+        print("  / | \\")
+        print("1   2   3")
+        p_move = input("\nYour move [1-9 move, 5 stay still]:")
         n_state, r, done, dummy, info = env.step(int(p_move))
-        print('\nEpisode:', e, 'Step:', e_step)
-        print('\nReward:', r)
+        print("\nEpisode:", e, "Step:", e_step)
+        print("\nReward:", r)
         total_reward += r
         e_step += 1
         # n_state = n_state.ravel()
