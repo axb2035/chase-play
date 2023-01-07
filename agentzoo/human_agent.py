@@ -28,7 +28,13 @@ state_log = []
 # default_action = np.array([0,0,0])
 # play(gym.make('gym_examples:GridWorld-v0')) #, keys_to_action=mapping))
 
+
+def legitimate_move(action):
+    return True if str.isdigit(action) and int(action) in range(1, 10) else False
+
+
 env = gym.make("gym_chase:Chase-v1", render_mode="human")
+
 while e < EPISODES:
     done = False
     e_step = 0
@@ -39,14 +45,16 @@ while e < EPISODES:
     # state_log.append([e, e_step, None, None, done, deepcopy(state)])
 
     while not done:
+        p_move = ''
         env.render()
         print("\n7   8   9")
         print("  \\ | /")
         print("4 - 5 - 6")
         print("  / | \\")
         print("1   2   3")
-        p_move = input("\nYour move [1-9 move, 5 stay still]:")
-        n_state, r, done, dummy, info = env.step(int(p_move))
+        while legitimate_move(p_move) is False:            
+            p_move = input("\nYour move [1-9 move, 5 stay still]:")
+        n_state, r, done, dummy, info = env.step(int(p_move)-1)
         print("\nEpisode:", e, "Step:", e_step)
         print("\nReward:", r)
         total_reward += r
