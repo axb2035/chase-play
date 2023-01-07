@@ -5,7 +5,6 @@ Created on Mon Jun 24 16:29:35 2019.
 import argparse
 import random
 from datetime import datetime
-from random import randrange
 from typing import Optional
 
 import gymnasium as gym
@@ -44,12 +43,12 @@ def write_chase_log(log, agent_name):
 # TODO: make the env work with play(gymnasium.make('gym_chase:Chase-v1'))
 
 
-def play(epsiodes: Optional[int] = 2):
+def play(epsiodes: Optional[int] = 2, possum: Optional[bool] = False):
     """Play Chase using a random agent."""
     env = gym.make("gym_chase:Chase-v1")
     e = 0
     while e < epsiodes:
-        done = False
+        terminated = False
         e_step = 0
         total_reward = 0
         state, info = env.reset(seed=e)
@@ -58,10 +57,12 @@ def play(epsiodes: Optional[int] = 2):
         # state_log.append([e, e_step, None, None, done, deepcopy(state)])
 
         random.seed()
-        while not done:
-            rnd_move = randrange(9) + 1
-            rnd_move = 5
-            n_state, r, done, dummy, info = env.step(rnd_move)
+        while not terminated:
+            if possum:
+                action = 4
+            else:
+                action = env.action_space.sample()
+            n_state, r, terminated, truncated, info = env.step(action)
             total_reward += r
             e_step += 1
             # n_state = n_state.ravel()
@@ -80,15 +81,16 @@ def main():
     # Added to stop LF being added when converted to string.
     np.set_printoptions(linewidth=1000)
 
-    parser = argparse.ArgumentParser()  # Create the parser
+    parser = argparse.ArgumentParser()
     parser.add_argument(
         "-e", "--episodes", type=int, default=2, help="Number of episodes to run."
-    )  # Add the arguments
-    args = parser.parse_args()  # Parse the arguments
+    )
+    parser.add_argument(
+        "-p", "--possum", type=bool, default=False, help="Don't move agent. i.e. If I don't move maybe they won't see me."
+    )
+    args = parser.parse_args()
 
-    print("In main")
-
-    play(args.episodes)
+    play(args.episodes, args.possum)
 
 
 if __name__ == "__main__":
